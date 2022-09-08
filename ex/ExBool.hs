@@ -38,56 +38,68 @@ instance Enum Bool where
 
 -- conjunction (AND)
 (&&) :: Bool -> Bool -> Bool
-(&&) = undefined
+(&&) True True = True
+(&&) _ _ = False
 
 infixr 3 &&
 
 -- disjunction (OR)
 (||) :: Bool -> Bool -> Bool
-(||) = undefined
+(||) True _ = True
+(||) _ x = x
 
 infixr 2 ||
 
 -- NAND (Sheffer stroke)
 (/|\) :: Bool -> Bool -> Bool
-(/|\) = undefined
+(/|\) x y = not ((&&) x y)
 
 infixr 2 /|\
 
 -- NOR (aka: Peirce arrow or Quine dagger)
 (\|/) :: Bool -> Bool -> Bool
-(\|/) = undefined
+(\|/) x y = not ((||) x y)
 
 infixr 2 \|/
 
+ -- Extra (Diff)
+(!=) :: Bool -> Bool -> Bool
+(!=) True False = True
+(!=) False True = True
+(!=) _ _ = False
+
+infixr 2 !=
+
 -- XOR (exclusive disjunction)
 (<=/=>) :: Bool -> Bool -> Bool
-(<=/=>) = undefined
+(<=/=>) x y = x != y
 
 infixr 2 <=/=>
 
 -- boolean negation
 not :: Bool -> Bool
-not = undefined
+not True = False
+not _ = True
 
 -- if-then-else expression
 ifThenElse :: Bool -> a -> a -> a
-ifThenElse = undefined
+ifThenElse True a _ = a  
+ifThenElse _ _ b = b
 
 -- logical "implies"
 (==>) :: Bool -> Bool -> Bool
-(==>) = undefined
+(==>) True False = False
+(==>) _ _ = True 
 
 infixr 1 ==>
 
 -- logical "implied by"
 (<==) :: Bool -> Bool -> Bool
-(<==) = undefined
-
+(<==) x y = y ==> x 
 infixl 1 <==
 
 -- logical equivalence
 (<=>) :: Bool -> Bool -> Bool
-(<=>) = undefined
+(<=>) x y = not (x <=/=> y)  
 
 infixr 1 <=>
