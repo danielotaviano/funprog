@@ -5,32 +5,11 @@ module ExList where
 
 import qualified Data.Char as C
 import qualified Data.List as L
-import Prelude
-  ( Bool (..),
-    Char,
-    Double,
-    Enum (..),
-    Eq (..),
-    Float,
-    Int,
-    Integer,
-    Integral (..),
-    Num (..),
-    Ord (..),
-    String,
-    curry,
-    error,
-    flip,
-    not,
-    otherwise,
-    uncurry,
-    undefined,
-    ($),
-    (&&),
-    (.),
-    (||),
-  )
-import qualified Prelude as P
+import           Prelude   (Bool (..), Char, Double, Enum (..), Eq (..), Float,
+                            Int, Integer, Integral (..), Num (..), Ord (..),
+                            String, curry, error, flip, not, otherwise, uncurry,
+                            undefined, ($), (&&), (.), (||))
+import qualified Prelude   as P
 
 -- to use a function from a qualified import
 -- you need to prefix its name with its alias
@@ -42,35 +21,35 @@ import qualified Prelude as P
 -- You MUST NOT use ANY of these in your code
 
 head :: [a] -> a
-head [] = error "head: empty list"
-head (r : rs) = r
+head []      = error "head: empty list"
+head (r : _) = r
 
 tail :: [a] -> [a]
-tail [] = error "tail: empty list"
-tail (r : rs) = rs
+tail []       = error "tail: empty list"
+tail (_ : rs) = rs
 
 null :: [a] -> Bool
 null [] = True
-null _ = False
+null _  = False
 
 length :: Integral i => [a] -> i
-length [] = 0
+length []       = 0
 length (_ : rs) = 1 + length rs
 
 sum :: Num a => [a] -> a
-sum [] = 0
+sum []       = 0
 sum (r : rs) = r + sum rs
 
 product :: Num a => [a] -> a
-product [] = 1
+product []       = 1
 product (r : rs) = r * product rs
 
 reverse :: [a] -> [a]
-reverse [] = []
+reverse []       = []
 reverse (r : rs) = reverse rs ++ [r]
 
 (++) :: [a] -> [a] -> [a]
-(++) [] rs = rs
+(++) [] rs        = rs
 (++) (r : rs) rs' = r : (rs ++ rs')
 
 -- right-associative for performance!
@@ -86,8 +65,8 @@ snoc r rs = rs ++ [r]
 
 -- different implementation of (++)
 (+++) :: [a] -> [a] -> [a]
-xs +++ [] = xs
-xs +++ [y] = xs <: y
+xs +++ []       = xs
+xs +++ [y]      = xs <: y
 xs +++ (y : ys) = (xs +++ [y]) +++ ys
 
 -- left-associative for performance!

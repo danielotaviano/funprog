@@ -1,23 +1,9 @@
 module ExNat where
 
 -- Do not alter this import!
-import Prelude
-  ( Bool (..),
-    Eq (..),
-    Integral,
-    Num (..),
-    Ord (..),
-    Show (..),
-    error,
-    not,
-    otherwise,
-    undefined,
-    ($),
-    (&&),
-    (++),
-    (.),
-    (||),
-  )
+import           Prelude (Bool (..), Eq (..), Integral, Num (..), Ord (..),
+                          Show (..), error, not, otherwise, undefined, ($),
+                          (&&), (++), (.), (||))
 
 -- Define evenerything that is undefined,
 -- without using standard Haskell functions.
@@ -28,17 +14,17 @@ data Nat = Zero | Succ Nat
 instance Show Nat where
   -- zero  should be shown as O
   -- three should be shown as SSSO
-  show Zero = "O"
+  show Zero     = "O"
   show (Succ n) = "S" ++ show n
 
 instance Eq Nat where
-  (==) Zero Zero = True
+  (==) Zero Zero         = True
   (==) (Succ n) (Succ m) = (==) n m
-  (==) _ _ = False
+  (==) _ _               = False
 
 instance Ord Nat where
-  (<=) Zero _ = True
-  (<=) _ Zero = False
+  (<=) Zero _            = True
+  (<=) _ Zero            = False
   (<=) (Succ n) (Succ m) = (<=) n m
 
   -- Ord does not REQUIRE defining min and max.
@@ -46,23 +32,23 @@ instance Ord Nat where
   -- Both are binary functions: max m n = ..., etc.
 
   min (Succ m) (Succ n) = Succ (min m n)
-  min _ _ = Zero
+  min _ _               = Zero
 
   max (Succ m) (Succ n) = Succ (max m n)
-  max Zero a = a
-  max a Zero = a
+  max Zero a            = a
+  max a Zero            = a
 
 isZero :: Nat -> Bool
 isZero Zero = True
-isZero _ = False
+isZero _    = False
 
 -- pred is the predecessor but we define zero's to be zero
 pred :: Nat -> Nat
-pred Zero = Zero
+pred Zero     = Zero
 pred (Succ n) = n
 
 even :: Nat -> Bool
-even Zero = True
+even Zero     = True
 even (Succ n) = odd n
 
 odd :: Nat -> Bool
@@ -70,7 +56,7 @@ odd = not . even
 
 -- addition
 (<+>) :: Nat -> Nat -> Nat
-(<+>) Zero n = n
+(<+>) Zero n     = n
 (<+>) (Succ m) n = Succ (m <+> n)
 
 -- This is called the dotminus or monus operator
@@ -78,31 +64,31 @@ odd = not . even
 -- It behaves like subtraction, except that it returns 0
 -- when "normal" subtraction would return a negative number.
 (<->) :: Nat -> Nat -> Nat
-(<->) Zero n = n
-(<->) n Zero = n
+(<->) Zero n            = n
+(<->) n Zero            = n
 (<->) (Succ m) (Succ n) = m <-> n
 
 -- multiplication
 (<*>) :: Nat -> Nat -> Nat
-(<*>) Zero _ = Zero
+(<*>) Zero _     = Zero
 (<*>) (Succ m) n = n <+> (m <*> n)
 
 -- exponentiation
 (<^>) :: Nat -> Nat -> Nat
-(<^>) n Zero = Succ Zero
+(<^>) n Zero     = Succ Zero
 (<^>) n (Succ m) = n <*> (n <^> m)
 
 -- quotient
 (</>) :: Nat -> Nat -> Nat
 (</>) n Zero = error "Division by zero"
 (</>) Zero _ = Zero
-(</>) n m = if n < m then Zero else Succ ((n <-> m) </> m)
+(</>) n m    = if n < m then Zero else Succ ((n <-> m) </> m)
 
 -- remainder
 (<%>) :: Nat -> Nat -> Nat
 (<%>) n Zero = error "Division by zero"
 (<%>) Zero _ = Zero
-(<%>) n m = max m n <-> min m n
+(<%>) n m    = max m n <-> min m n
 
 -- divides
 (<|>) :: Nat -> Nat -> Bool
@@ -120,12 +106,12 @@ absDiff n m = if m >= n then m <-> n else n <-> m
 
 factorial :: Nat -> Nat
 factorial Zero = Succ Zero
-factorial n = n <*> (factorial . pred) n
+factorial n    = n <*> (factorial . pred) n
 
 -- signum of a number (-1, 0, or 1)
 sg :: Nat -> Nat
 sg Zero = Zero
-sg _ = Succ Zero
+sg _    = Succ Zero
 
 -- lo b a is the floor of the logarithm base b of a
 lo :: Nat -> Nat -> Nat
@@ -143,7 +129,7 @@ toNat n
 
 fromNat :: Integral a => Nat -> a
 fromNat Zero = 0
-fromNat n = 1 + fromNat (n <-> Succ Zero)
+fromNat n    = 1 + fromNat (n <-> Succ Zero)
 
 -- Obs: we can now easily make Nat an instance of Num.
 instance Num Nat where

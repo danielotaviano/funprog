@@ -8,7 +8,7 @@ module ExRat
 data Signal = M | P
 data Dec = Zero | Succ Dec
 -- define Rat:
-data Rat = Zero | Succ Signal Rat Dec 
+data Rat = Zero | Succ Signal Rat Dec
 
 instance Show Rat where
     show = undefined
