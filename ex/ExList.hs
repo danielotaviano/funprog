@@ -73,18 +73,30 @@ xs +++ (y : ys) = (xs +++ [y]) +++ ys
 -- (hmm?)
 infixl 5 +++
 
--- minimum :: Ord a => [a] -> a
--- minimum [] = error "minimum: empty list"
--- minimum [a] = a
--- minimum (r : rs)
---   | r <= minimum rs = r
---   | otherwise = minimum rs
+minimum :: Ord a => [a] -> a
+minimum [] = error "minimum: empty list"
+minimum [a] = a
+minimum (r : rs)
+  | r <= minimum rs = r
+  | otherwise = minimum rs
 
--- maximum :: Ord a => [a] -> a
+maximum :: Ord a => [a] -> a
+maximum [] = error "maximum: empty list"
+maximum [a] = a
+maximum (r : rs)
+  | r >= maximum rs = r
+  | otherwise = maximum rs
 
--- take
--- drop
 
+take :: Integral a => a -> [b] -> [b]
+take 0 _      = []
+take _ []     = []
+take n (y:ys) = y : take (n-1) ys
+
+drop :: Integral i => i -> [a] -> [a]
+drop 0 xs     = xs
+drop _ []     = []
+drop n (_:xs) = drop (n-1) xs
 -- takeWhile
 -- dropWhile
 
