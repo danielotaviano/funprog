@@ -5,16 +5,15 @@ module ExRat
     , numerator
     ) where
 
-data Signal = M | P
-data Dec = Zero | Succ Dec
 -- define Rat:
-data Rat = Zero | Succ Signal Rat Dec
+data Rat = Rat Integer Integer
+    deriving (Show)
 
-instance Show Rat where
-    show = undefined
+-- instance Show Rat where
+--     show = undefined
 
 instance Eq Rat where
-    (==) = undefined
+    Rat x y == Rat n m = x * m == y *n
 
 instance Num Rat where
     (+) = undefined
@@ -28,7 +27,8 @@ instance Ord Rat where
     compare = undefined
 
 rat :: Integer -> Integer -> Rat
-rat = undefined
+rat _ 0 = error "denominator is zero"
+rat x y = Rat x y
 
 (//) :: Rat -> Rat -> Rat
 (//) = undefined
