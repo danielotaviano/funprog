@@ -3,33 +3,13 @@
 {-# HLINT ignore "Use foldr" #-}
 module ExList where
 
-import qualified Data.Char                     as C
-import qualified Data.List                     as L
-import           Prelude                        ( ($)
-                                                , (&&)
-                                                , (.)
-                                                , Bool(..)
-                                                , Char
-                                                , Double
-                                                , Enum(..)
-                                                , Eq(..)
-                                                , Float
-                                                , Int
-                                                , Integer
-                                                , Integral(..)
-                                                , Num(..)
-                                                , Ord(..)
-                                                , String
-                                                , curry
-                                                , error
-                                                , flip
-                                                , not
-                                                , otherwise
-                                                , uncurry
-                                                , undefined
-                                                , (||)
-                                                )
-import qualified Prelude                       as P
+import qualified Data.Char as C
+import qualified Data.List as L
+import           Prelude   (Bool (..), Char, Double, Enum (..), Eq (..), Float,
+                            Int, Integer, Integral (..), Num (..), Ord (..),
+                            String, curry, error, flip, not, otherwise, uncurry,
+                            undefined, ($), (&&), (.), (||))
+import qualified Prelude   as P
 
 -- to use a function from a qualified import
 -- you need to prefix its name with its alias
@@ -124,7 +104,11 @@ takeWhile p (x : xs) | p x       = x : takeWhile p xs
                      | otherwise = []
 
 
--- dropWhile
+
+dropWhile :: (a -> Bool) -> [a] -> [a]
+dropWhile _ [] = []
+dropWhile p (x : xs) | p x       = dropWhile p xs
+                     | otherwise = x:dropWhile p xs
 
 -- tails
 -- init
