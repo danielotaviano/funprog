@@ -131,13 +131,14 @@ init []       = []
 init [a     ] = []
 init (x : xs) = x : init xs
 
--- Luca Luc Lu L ""
-
 inits :: [a] -> [[a]]
 inits [] = [[]]
 inits xs = xs : inits (init xs)
 
--- subsequences
+
+subsequences :: [a] -> [[a]]
+subsequences []       = [[]]
+subsequences (x : xs) = map (x :) (subsequences xs) ++ subsequences xs
 
 -- any
 -- all
@@ -155,7 +156,9 @@ inits xs = xs : inits (init xs)
 -- (!!)
 
 -- filter
--- map
+map :: (a -> b) -> [a] -> [b]
+map _ []       = []
+map p (x : xs) = p x : map p xs
 
 -- cycle
 -- repeat
