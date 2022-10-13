@@ -162,14 +162,25 @@ or (x : xs) | x         = True
 or' :: [Bool] -> Bool
 or' = any (\x -> x)
 
--- concat
+concat :: [[a]] -> [a]
+concat []       = []
+concat (x : xs) = x ++ concat xs
 
 -- elem using the funciton 'any' above
+elem :: Eq a => a -> [a] -> Bool
+elem x = any (== x)
 
 -- elem': same as elem but elementary definition
 -- (without using other functions except (==))
+elem' :: Eq a => a -> [a] -> Bool
+elem' _ [] = False
+elem' a (x : xs) | a == x    = True
+                 | otherwise = elem' a xs
 
--- (!!)
+(!!) :: [a] -> Int -> a
+(!!) [] _ = error "too large index"
+(!!) (x : xs) i | i == 0    = x
+                | otherwise = (!!) xs (i - 1)
 
 -- filter
 map :: (a -> b) -> [a] -> [b]
