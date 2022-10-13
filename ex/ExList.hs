@@ -200,9 +200,23 @@ replicate 0 _ = []
 replicate i x = x : replicate (i - 1) x
 
 
--- isPrefixOf
--- isInfixOf
--- isSuffixOf
+isPrefixOf :: Eq a => [a] -> [a] -> Bool
+isPrefixOf [] _  = True
+isPrefixOf _  [] = False
+isPrefixOf (x : xs) (y : ys) | x == y    = isPrefixOf xs ys
+                             | otherwise = False
+
+
+
+isInfixOf :: Eq a => [a] -> [a] -> Bool
+isInfixOf [] _  = True
+isInfixOf _  [] = False
+isInfixOf xs'@(x : xs) ys'@(y : ys) | x == y    = xs' `isPrefixOf` ys'
+                                    | otherwise = isInfixOf xs' ys
+
+
+isSuffixOf :: Eq a => [a] -> [a] -> Bool
+isSuffixOf xs ys = reverse xs `isPrefixOf` reverse ys
 
 zip :: [a] -> [b] -> [(a, b)]
 zip []       _        = []
