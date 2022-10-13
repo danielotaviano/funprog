@@ -3,13 +3,33 @@
 {-# HLINT ignore "Use foldr" #-}
 module ExList where
 
-import qualified Data.Char as C
-import qualified Data.List as L
-import           Prelude   (Bool (..), Char, Double, Enum (..), Eq (..), Float,
-                            Int, Integer, Integral (..), Num (..), Ord (..),
-                            String, curry, error, flip, not, otherwise, uncurry,
-                            undefined, ($), (&&), (.), (||))
-import qualified Prelude   as P
+import qualified Data.Char                     as C
+import qualified Data.List                     as L
+import           Prelude                        ( ($)
+                                                , (&&)
+                                                , (.)
+                                                , Bool(..)
+                                                , Char
+                                                , Double
+                                                , Enum(..)
+                                                , Eq(..)
+                                                , Float
+                                                , Int
+                                                , Integer
+                                                , Integral(..)
+                                                , Num(..)
+                                                , Ord(..)
+                                                , String
+                                                , curry
+                                                , error
+                                                , flip
+                                                , not
+                                                , otherwise
+                                                , uncurry
+                                                , undefined
+                                                , (||)
+                                                )
+import qualified Prelude                       as P
 
 -- to use a function from a qualified import
 -- you need to prefix its name with its alias
@@ -49,7 +69,7 @@ reverse []       = []
 reverse (r : rs) = reverse rs ++ [r]
 
 (++) :: [a] -> [a] -> [a]
-(++) [] rs        = rs
+(++) []       rs  = rs
 (++) (r : rs) rs' = r : (rs ++ rs')
 
 -- right-associative for performance!
@@ -66,7 +86,7 @@ snoc r rs = rs ++ [r]
 -- different implementation of (++)
 (+++) :: [a] -> [a] -> [a]
 xs +++ []       = xs
-xs +++ [y]      = xs <: y
+xs +++ [y     ] = xs <: y
 xs +++ (y : ys) = (xs +++ [y]) +++ ys
 
 -- left-associative for performance!
@@ -74,30 +94,36 @@ xs +++ (y : ys) = (xs +++ [y]) +++ ys
 infixl 5 +++
 
 minimum :: Ord a => [a] -> a
-minimum [] = error "minimum: empty list"
+minimum []  = error "minimum: empty list"
 minimum [a] = a
-minimum (r : rs)
-  | r <= minimum rs = r
-  | otherwise = minimum rs
+minimum (r : rs) | r <= minimum rs = r
+                 | otherwise       = minimum rs
 
 maximum :: Ord a => [a] -> a
-maximum [] = error "maximum: empty list"
+maximum []  = error "maximum: empty list"
 maximum [a] = a
-maximum (r : rs)
-  | r >= maximum rs = r
-  | otherwise = maximum rs
+maximum (r : rs) | r >= maximum rs = r
+                 | otherwise       = maximum rs
 
 
 take :: Integral a => a -> [b] -> [b]
-take 0 _      = []
-take _ []     = []
-take n (y:ys) = y : take (n-1) ys
+take 0 _        = []
+take _ []       = []
+take n (y : ys) = y : take (n - 1) ys
 
 drop :: Integral i => i -> [a] -> [a]
-drop 0 xs     = xs
-drop _ []     = []
-drop n (_:xs) = drop (n-1) xs
--- takeWhile
+drop 0 xs       = xs
+drop _ []       = []
+drop n (_ : xs) = drop (n - 1) xs
+
+
+
+takeWhile :: (a -> Bool) -> [a] -> [a]
+takeWhile _ [] = []
+takeWhile p (x : xs) | p x       = x : takeWhile p xs
+                     | otherwise = []
+
+
 -- dropWhile
 
 -- tails
@@ -132,8 +158,16 @@ drop n (_:xs) = drop (n-1) xs
 -- isInfixOf
 -- isSuffixOf
 
--- zip
--- zipWith
+zip :: [a] -> [b] -> [(a, b)]
+zip []       _        = []
+zip _        []       = []
+zip (x : xs) (y : ys) = (x, y) : zip xs ys
+
+
+zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
+zipWith _ []       _        = []
+zipWith _ _        []       = []
+zipWith p (x : xs) (y : ys) = p x y : zipWith p xs ys
 
 -- intercalate
 -- nub

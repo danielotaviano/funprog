@@ -10,43 +10,40 @@ module RPG where
 data CharacterRace = Human | Elf | Dwarf | Orc | Gnome | Halfling
 data CharacterClass = Fighter | Mage | Cleric | Thief | Ranger | Paladin
 
-type CharacterName =  String
-type CharacterLevel =  Int
-type CharacterXP =  Int
+type CharacterName = String
+type CharacterLevel = Int
+type CharacterXP = Int
 
-type CharacterStrength =  Int
-type CharacterIntelligence =  Int
-type CharacterWisdom =  Int
-type CharacterDexterity =  Int
-type CharacterConstitution =  Int
-type CharacterCharisma =  Int
+type CharacterStrength = Int
+type CharacterIntelligence = Int
+type CharacterWisdom = Int
+type CharacterDexterity = Int
+type CharacterConstitution = Int
+type CharacterCharisma = Int
 
 data CharacterHP = HP Int Int
 data CharacterMP = MP Int Int
 type CharacterGP = Int
 
-data CharacterProfile = CharacterProfile
-                            CharacterName
-                            CharacterRace
-                            CharacterClass
+data CharacterProfile = CharacterProfile CharacterName
+                                         CharacterRace
+                                         CharacterClass
 
-data CharacterAttributes = CharacterAttributes
-                            CharacterStrength
-                            CharacterIntelligence
-                            CharacterWisdom
-                            CharacterDexterity
-                            CharacterConstitution
-                            CharacterCharisma
+data CharacterAttributes = CharacterAttributes CharacterStrength
+                                               CharacterIntelligence
+                                               CharacterWisdom
+                                               CharacterDexterity
+                                               CharacterConstitution
+                                               CharacterCharisma
 
-data CharacterStats = CharacterStats
-                        CharacterLevel
-                        CharacterXP
-                        CharacterHP
-                        CharacterMP
-                        CharacterGP
+data CharacterStats = CharacterStats CharacterLevel
+                                     CharacterXP
+                                     CharacterHP
+                                     CharacterMP
+                                     CharacterGP
 
 
-data Character =   Character CharacterProfile CharacterAttributes CharacterStats
+data Character = Character CharacterProfile CharacterAttributes CharacterStats
 
 -- does that make sense?
 type Party = [Character]
@@ -54,17 +51,19 @@ type Party = [Character]
 -- gets a character and returns one that is the same but +1 level
 gainLevel :: Character -> Character
 gainLevel (Character profile attributes (CharacterStats level xp hp mp gp)) =
-    Character profile attributes (CharacterStats (level+1) xp hp mp gp)
+  Character profile attributes (CharacterStats (level + 1) xp hp mp gp)
 
 
 -- to be used when a character is hit
 hitCharacter :: Character -> Int -> Character
-hitCharacter (Character profile attributes (CharacterStats level xp (HP current total) mp gp)) damage =
-    Character profile attributes (CharacterStats level xp (HP (current-damage) total) mp gp)
+hitCharacter (Character profile attributes (CharacterStats level xp (HP current total) mp gp)) damage
+  = Character profile
+              attributes
+              (CharacterStats level xp (HP (current - damage) total) mp gp)
 
 alive :: Character -> Bool
-alive (Character profile attributes (CharacterStats level xp (HP current total) mp gp)) =
-    current > 0
+alive (Character profile attributes (CharacterStats level xp (HP current total) mp gp))
+  = current > 0
 
 
 -- How would you implement skills and spells?
@@ -94,8 +93,8 @@ getSpellPerClass Paladin = [Spell "Smite" 1, Spell "Bless" 1]
 
 
 skills :: Character -> [Skill]
-skills (Character (CharacterProfile _ _ cc ) att stats) = getSkillPerClass cc
+skills (Character (CharacterProfile _ _ cc) att stats) = getSkillPerClass cc
 
 spells :: Character -> [Spell]
-spells (Character (CharacterProfile _ _ cc ) att stats) = getSpellPerClass cc
+spells (Character (CharacterProfile _ _ cc) att stats) = getSpellPerClass cc
 

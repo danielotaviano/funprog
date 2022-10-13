@@ -1,9 +1,21 @@
 module ExBool where
 
 -- Do not alter this import!
-import           Prelude (Char, Enum (..), Eq (..), Int, Integral (..),
-                          Num (..), Ord (..), Show (..), error, otherwise,
-                          undefined, ($), (++), (.))
+import           Prelude                        ( ($)
+                                                , (++)
+                                                , (.)
+                                                , Char
+                                                , Enum(..)
+                                                , Eq(..)
+                                                , Int
+                                                , Integral(..)
+                                                , Num(..)
+                                                , Ord(..)
+                                                , Show(..)
+                                                , error
+                                                , otherwise
+                                                , undefined
+                                                )
 
 -- Define evenerything that is undefined,
 -- without using standard Haskell functions.
@@ -26,14 +38,14 @@ instance Enum Bool where
 -- conjunction (AND)
 (&&) :: Bool -> Bool -> Bool
 (&&) True True = True
-(&&) _ _       = False
+(&&) _    _    = False
 
 infixr 3 &&
 
 -- disjunction (OR)
 (||) :: Bool -> Bool -> Bool
 (||) True _ = True
-(||) _ x    = x
+(||) _    x = x
 
 infixr 2 ||
 
@@ -51,9 +63,9 @@ infixr 2 \|/
 
  -- Extra (Diff)
 (!=) :: Bool -> Bool -> Bool
-(!=) True False = True
-(!=) False True = True
-(!=) _ _        = False
+(!=) True  False = True
+(!=) False True  = True
+(!=) _     _     = False
 
 infixr 2 !=
 
@@ -71,12 +83,12 @@ not _    = True
 -- if-then-else expression
 ifThenElse :: Bool -> a -> a -> a
 ifThenElse True a _ = a
-ifThenElse _ _ b    = b
+ifThenElse _    _ b = b
 
 -- logical "implies"
 (==>) :: Bool -> Bool -> Bool
 (==>) True False = False
-(==>) _ _        = True
+(==>) _    _     = True
 
 infixr 1 ==>
 

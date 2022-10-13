@@ -4,8 +4,8 @@ errado :: [Char]
 errado = "not good"
 
 addFive :: Integer -> Integer
-addFive 0 = 100
-addFive 1 = 10 + five
+addFive 0    = 100
+addFive 1    = 10 + five
 addFive five = five + 5
 
 five :: Integer

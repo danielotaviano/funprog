@@ -1,9 +1,9 @@
 module Towards where
 
-import Data.Char
+import           Data.Char
 
 mapp :: (a -> a) -> [a] -> [a]
-mapp _ [] = []
+mapp _ []       = []
 mapp f (x : xs) = f x : mapp f xs
 
 numbers :: [Int]

@@ -1,9 +1,22 @@
 module ExNat where
 
 -- Do not alter this import!
-import           Prelude (Bool (..), Eq (..), Integral, Num (..), Ord (..),
-                          Show (..), error, not, otherwise, undefined, ($),
-                          (&&), (++), (.), (||))
+import           Prelude                        ( ($)
+                                                , (&&)
+                                                , (++)
+                                                , (.)
+                                                , Bool(..)
+                                                , Eq(..)
+                                                , Integral
+                                                , Num(..)
+                                                , Ord(..)
+                                                , Show(..)
+                                                , error
+                                                , not
+                                                , otherwise
+                                                , undefined
+                                                , (||)
+                                                )
 
 -- Define evenerything that is undefined,
 -- without using standard Haskell functions.
@@ -18,13 +31,13 @@ instance Show Nat where
   show (Succ n) = "S" ++ show n
 
 instance Eq Nat where
-  (==) Zero Zero         = True
+  (==) Zero     Zero     = True
   (==) (Succ n) (Succ m) = (==) n m
-  (==) _ _               = False
+  (==) _        _        = False
 
 instance Ord Nat where
-  (<=) Zero _            = True
-  (<=) _ Zero            = False
+  (<=) Zero     _        = True
+  (<=) _        Zero     = False
   (<=) (Succ n) (Succ m) = (<=) n m
 
   -- Ord does not REQUIRE defining min and max.
@@ -32,11 +45,11 @@ instance Ord Nat where
   -- Both are binary functions: max m n = ..., etc.
 
   min (Succ m) (Succ n) = Succ (min m n)
-  min _ _               = Zero
+  min _        _        = Zero
 
   max (Succ m) (Succ n) = Succ (max m n)
-  max Zero a            = a
-  max a Zero            = a
+  max Zero     a        = a
+  max a        Zero     = a
 
 isZero :: Nat -> Bool
 isZero Zero = True
@@ -56,7 +69,7 @@ odd = not . even
 
 -- addition
 (<+>) :: Nat -> Nat -> Nat
-(<+>) Zero n     = n
+(<+>) Zero     n = n
 (<+>) (Succ m) n = Succ (m <+> n)
 
 -- This is called the dotminus or monus operator
@@ -64,13 +77,13 @@ odd = not . even
 -- It behaves like subtraction, except that it returns 0
 -- when "normal" subtraction would return a negative number.
 (<->) :: Nat -> Nat -> Nat
-(<->) Zero n            = n
-(<->) n Zero            = n
+(<->) Zero     n        = n
+(<->) n        Zero     = n
 (<->) (Succ m) (Succ n) = m <-> n
 
 -- multiplication
 (<*>) :: Nat -> Nat -> Nat
-(<*>) Zero _     = Zero
+(<*>) Zero     _ = Zero
 (<*>) (Succ m) n = n <+> (m <*> n)
 
 -- exponentiation
@@ -80,15 +93,15 @@ odd = not . even
 
 -- quotient
 (</>) :: Nat -> Nat -> Nat
-(</>) n Zero = error "Division by zero"
-(</>) Zero _ = Zero
-(</>) n m    = if n < m then Zero else Succ ((n <-> m) </> m)
+(</>) n    Zero = error "Division by zero"
+(</>) Zero _    = Zero
+(</>) n    m    = if n < m then Zero else Succ ((n <-> m) </> m)
 
 -- remainder
 (<%>) :: Nat -> Nat -> Nat
-(<%>) n Zero = error "Division by zero"
-(<%>) Zero _ = Zero
-(<%>) n m    = max m n <-> min m n
+(<%>) n    Zero = error "Division by zero"
+(<%>) Zero _    = Zero
+(<%>) n    m    = max m n <-> min m n
 
 -- divides
 (<|>) :: Nat -> Nat -> Bool
@@ -123,9 +136,8 @@ lo = undefined
 --
 
 toNat :: Integral a => a -> Nat
-toNat n
-  | n <= 0 = Zero
-  | otherwise = Succ (toNat (n - 1))
+toNat n | n <= 0    = Zero
+        | otherwise = Succ (toNat (n - 1))
 
 fromNat :: Integral a => Nat -> a
 fromNat Zero = 0
@@ -138,7 +150,6 @@ instance Num Nat where
   (-) = (<->)
   abs n = n
   signum = sg
-  fromInteger x
-    | x < 0 = error "Negative number"
-    | x == 0 = Zero
-    | otherwise = Succ (fromInteger (x - 1))
+  fromInteger x | x < 0     = error "Negative number"
+                | x == 0    = Zero
+                | otherwise = Succ (fromInteger (x - 1))
