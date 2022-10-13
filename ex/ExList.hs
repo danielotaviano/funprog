@@ -166,12 +166,9 @@ concat :: [[a]] -> [a]
 concat []       = []
 concat (x : xs) = x ++ concat xs
 
--- elem using the funciton 'any' above
 elem :: Eq a => a -> [a] -> Bool
 elem x = any (== x)
 
--- elem': same as elem but elementary definition
--- (without using other functions except (==))
 elem' :: Eq a => a -> [a] -> Bool
 elem' _ [] = False
 elem' a (x : xs) | a == x    = True
@@ -182,14 +179,26 @@ elem' a (x : xs) | a == x    = True
 (!!) (x : xs) i | i == 0    = x
                 | otherwise = (!!) xs (i - 1)
 
--- filter
+filter :: (a -> Bool) -> [a] -> [a]
+filter _ [] = []
+filter p (x : xs) | p x       = x : filter p xs
+                  | otherwise = filter p xs
+
+
 map :: (a -> b) -> [a] -> [b]
 map _ []       = []
 map p (x : xs) = p x : map p xs
 
--- cycle
--- repeat
--- replicate
+cycle :: [a] -> [a]
+cycle xs = xs ++ cycle xs
+
+repeat :: a -> [a]
+repeat a = a : repeat a
+
+replicate :: Int -> a -> [a]
+replicate 0 _ = []
+replicate i x = x : replicate (i - 1) x
+
 
 -- isPrefixOf
 -- isInfixOf
