@@ -135,13 +135,14 @@ inits :: [a] -> [[a]]
 inits [] = [[]]
 inits xs = xs : inits (init xs)
 
-
 subsequences :: [a] -> [[a]]
 subsequences []       = [[]]
 subsequences (x : xs) = map (x :) (subsequences xs) ++ subsequences xs
 
--- any
--- all
+any :: (a -> Bool) -> [a] -> Bool
+any p (x : xs) | p x       = True
+               | otherwise = any p xs
+any _ _ = False
 
 -- and
 -- or
