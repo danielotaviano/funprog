@@ -144,8 +144,23 @@ any p (x : xs) | p x       = True
                | otherwise = any p xs
 any _ _ = False
 
--- and
--- or
+and :: [Bool] -> Bool
+and [] = True
+and (x : xs) | not x     = False
+             | otherwise = and xs
+
+
+and' :: [Bool] -> Bool
+and' = not . any not
+
+
+or :: [Bool] -> Bool
+or [] = False
+or (x : xs) | x         = True
+            | otherwise = or xs
+
+or' :: [Bool] -> Bool
+or' = any (\x -> x)
 
 -- concat
 
