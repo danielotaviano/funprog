@@ -122,8 +122,8 @@ takeWhile p (x : xs) | p x       = x : takeWhile p xs
                      | otherwise = []
 dropWhile :: (a -> Bool) -> [a] -> [a]
 dropWhile _ [] = []
-dropWhile p (x : xs) | p x       = dropWhile p xs
-                     | otherwise = x : dropWhile p xs
+dropWhile p (x : xs) | not $ p x = x : xs
+                     | otherwise = dropWhile p xs
 
 -- tails :: 
 init :: [a] -> [a]
@@ -214,7 +214,6 @@ isInfixOf _  [] = False
 isInfixOf xs'@(x : xs) ys'@(y : ys) | x == y    = xs' `isPrefixOf` ys'
                                     | otherwise = isInfixOf xs' ys
 
-
 isSuffixOf :: Eq a => [a] -> [a] -> Bool
 isSuffixOf xs ys = reverse xs `isPrefixOf` reverse ys
 
@@ -229,26 +228,84 @@ zipWith _ []       _        = []
 zipWith _ _        []       = []
 zipWith p (x : xs) (y : ys) = p x y : zipWith p xs ys
 
--- intercalate
--- nub
+intercalate :: [a] -> [[a]] -> [a]
+intercalate _  []       = []
+intercalate _  [a     ] = a
+intercalate xs (y : ys) = y ++ xs ++ intercalate xs ys
 
--- splitAt
+
+nub :: Eq a => [a] -> [a]
+nub [] = []
+nub (x : xs) | x `elem` right = nub xs
+             | otherwise      = x : nub xs
+  where right = nub xs
+
+splitAt :: Int -> [a] -> ([a], [a])
+splitAt 0 xs       = ([], xs)
+splitAt _ []       = ([], [])
+splitAt i (x : xs) = (x : h, t) where (h, t) = splitAt (i - 1) xs
+
+
 -- what is the problem with the following?:
 -- splitAt n xs  =  (take n xs, drop n xs)
 
--- break
+break :: (a -> Bool) -> [a] -> ([a], [a])
+break _ [] = ([], [])
+break p (x : xs) | p x       = ([], x : xs)
+                 | otherwise = (x : h, t)
+  where (h, t) = break p xs
 
--- lines
--- words
--- unlines
--- unwords
 
--- transpose
+lines :: String -> [String]
+lines ""   = []
+lines "\n" = [""]
+lines s | null t    = [h]
+        | otherwise = h : lines (tail t)
+  where (h, t) = break (== '\n') s
+
+words :: String -> [String]
+words "" = []
+words s | null t    = [h]
+        | otherwise = h : words (tail t)
+  where (h, t) = break (\x -> x == ' ' || x == '\n') s
+
+unlines :: [String] -> String
+unlines []       = ""
+unlines (s : ss) = s ++ "\n" ++ unlines ss
+
+isSpace :: Char -> Bool
+isSpace ' ' = True
+isSpace _   = False
+
+trim :: String -> String
+trim = f . f where f = reverse . dropWhile isSpace
+
+unwords :: [String] -> String
+unwords []       = ""
+unwords (s : ss) = s ++ " " ++ trim (unwords ss)
+
+transpose :: [[a]] -> [[a]]
+transpose []         = []
+transpose ([] : xss) = transpose xss
+transpose xss        = h : transpose t
+ where
+  h = map head xss
+  t = map tail xss
+
+
+toLower :: Char -> Char
+toLower c | 'A' <= c && c <= 'Z' = toEnum (fromEnum c + 32) :: Char
+          | otherwise            = c
+
+sanitaze :: String -> [Char] -> String
+sanitaze s cs = map toLower $ filter (not . (`elem` cs)) s
 
 -- checks if the letters of a phrase form a palindrome (see below for examples)
 palindrome :: String -> Bool
-palindrome = undefined
-
+palindrome s = satinazedString == f satinazedString
+ where
+  satinazedString = sanitaze s ['.', '?', ',', '\'', '!', ' ']
+  f               = reverse
 {-
 
 Examples of palindromes:
