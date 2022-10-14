@@ -49,7 +49,7 @@ maybeToList Nothing  = []
 maybeToList (Just x) = [x]
 
 tryToModifyWith :: [Maybe (a -> a)] -> [a] -> [a]
-tryToModifyWith []              _        = []
+tryToModifyWith []              xs       = xs
 tryToModifyWith _               []       = []
-tryToModifyWith (Nothing  : fs) (x : xs) = tryToModifyWith fs xs
+tryToModifyWith (Nothing  : fs) (x : xs) = x : tryToModifyWith fs xs
 tryToModifyWith ((Just f) : fs) (x : xs) = f x : tryToModifyWith fs xs
