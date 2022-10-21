@@ -125,7 +125,10 @@ dropWhile _ [] = []
 dropWhile p (x : xs) | not $ p x = x : xs
                      | otherwise = dropWhile p xs
 
--- tails :: 
+tails :: [a] -> [[a]]
+tails []           = [[]]
+tails xs'@(x : xs) = xs' : tails xs
+
 init :: [a] -> [a]
 init []       = []
 init [a     ] = []
