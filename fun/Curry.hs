@@ -12,4 +12,4 @@ curry f x y = f (x, y)
 
 
 uncurry :: (a -> b -> c) -> ((a, b) -> c)
-uncurry f (a, b) = f a b
+uncurry f (x, y) = f x y
